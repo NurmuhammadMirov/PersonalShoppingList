@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../components/NavBar/NavBar';
@@ -16,15 +16,11 @@ function ListDetail() {
   let navigate = useNavigate();
   const { listId } = useParams();
 
-const { loading, error, items: data } = useContext(ItemContext);
-
-  const [items, setItems] = useState([]);
+  const { loading, error, items, fetchItems } = useContext(ItemContext);
 
   useEffect(() => {
-    data &&
-      listId &&
-      setItems(data.filter((item) => item.listId === parseInt(listId)));
-  }, [data, listId]);
+    listId && !items.length && fetchItems(listId);
+  }, [fetchItems, items, listId]);
 
   return (
     <>
